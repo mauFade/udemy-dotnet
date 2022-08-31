@@ -13,8 +13,7 @@ namespace dotnet_api.Controllers
         new Character { Name = "Alucard" }
     };
 
-    [HttpGet]
-    [Route("get-all")]
+    [HttpGet("get-all")]
     public ActionResult<List<Character>> Get()
     {
       return Ok(characters);
