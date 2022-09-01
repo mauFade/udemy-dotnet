@@ -1,3 +1,4 @@
+using dotnet_api.Services.CharacterService;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -7,27 +8,28 @@ namespace dotnet_api.Controllers
   [Route("/api/[controller]")]
   public class CharacterController : ControllerBase
   {
-    private static List<Character> characters = new List<Character>
+    private readonly ICharacterService _characterService;
+    public CharacterController(ICharacterService characterService)
     {
-        new Character(),
-        new Character { Name = "Alucard" }
-    };
+      _characterService = characterService;
+    }
 
     [HttpGet("get-all")]
-    public ActionResult<List<Character>> Get()
+    public ActionResult<List<Character>> FetchAll()
     {
-      return Ok(characters);
+      return Ok(_characterService.FetchAll());
     }
 
-    [HttpGet]
-    public ActionResult<List<Character>> GetOne()
+    [HttpGet("{id}")]
+    public ActionResult<List<Character>> FetchById(int id)
     {
-      return Ok(characters[0]);
+      return Ok(_characterService.FetchById(id));
     }
 
-    // [HttpPost]
-    // public ActionResult<Character> Create(){
-    //     var newCharacter = new Character({})
-    // }
+    [HttpPost]
+    public ActionResult<Character> Create(Character newCharacter)
+    {
+      return Ok(_characterService.Create(newCharacter));
+    }
   }
 }
